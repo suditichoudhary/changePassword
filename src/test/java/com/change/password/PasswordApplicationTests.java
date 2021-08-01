@@ -137,7 +137,7 @@ public class PasswordApplicationTests {
 
 	}
 
-	/* 4. Test to verify old pwd is NOT > 80% match - success */
+	/* 13. Test to verify old pwd is NOT > 80% match - success */
 	@Test
 	public void oldPasswordNOT80PercMatchTest() {
 		String emailAddress = "testing2@gmail.com";
@@ -146,5 +146,52 @@ public class PasswordApplicationTests {
 		UserEntity testEntity = new UserEntity(5l,"test","testing2@gmail.com","Ghfgh6jokjmbkkjjkh*");
 		when(userDetailsRepository.findByEmail(emailAddress)).thenReturn(testEntity);
 		assertEquals(true,passwordChangeService.comparePasswordMatchPercentage(oldPassword,newPassword));
+	}
+
+	/* 14. Test to verify old pwd blank checked */
+	@Test
+	public void changePasswordOldPwdBlankTest() {
+		String emailAddress = "testing2@gmail.com";
+		String oldPassword = "";
+		String newPassword = "yhFlok8jmbkljjkikh*";
+		UserEntity testEntity = new UserEntity(5l,"test","testing2@gmail.com","Ghfgh6jokjmbkkjjkh*");
+		when(userDetailsRepository.findByEmail(emailAddress)).thenReturn(testEntity);
+		Response response=passwordChangeService.changePassword(emailAddress, oldPassword, newPassword);
+		assertEquals("Old Password is mandatory!!",response.getMessage());
+	}
+
+
+	/* 15. Test to verify new pwd blank checked */
+	@Test
+	public void changePasswordNewPwdBlankTest() {
+		String emailAddress = "testing2@gmail.com";
+		String oldPassword = "Ghfgh6jokjmbkkjjkh*";
+		String newPassword = "";
+		UserEntity testEntity = new UserEntity(5l,"test","testing2@gmail.com","Ghfgh6jokjmbkkjjkh*");
+		when(userDetailsRepository.findByEmail(emailAddress)).thenReturn(testEntity);
+		Response response=passwordChangeService.changePassword(emailAddress, oldPassword, newPassword);
+		assertEquals("NEW Password is mandatory!!",response.getMessage());
+	}
+
+	/* 16. Test to verify email blank checked */
+	@Test
+	public void changePasswordEmailBlankTest() {
+		String emailAddress = "";
+		String oldPassword = "Ghfgh6jokjmbkkjjkh*";
+		String newPassword = "yhFlok8jmbkljjkikh*";
+		UserEntity testEntity = new UserEntity(5l,"test","testing2@gmail.com","Ghfgh6jokjmbkkjjkh*");
+		when(userDetailsRepository.findByEmail(emailAddress)).thenReturn(testEntity);
+		Response response=passwordChangeService.changePassword(emailAddress, oldPassword, newPassword);
+		assertEquals("Email address is mandatory!!",response.getMessage());
+	}
+
+	/* 17. Test to verify email id doesn't exist */
+	@Test
+	public void changePasswordWrongEmailTest() {
+		String emailAddress = "gjh";
+		String oldPassword = "Ghfgh6jokjmbkkjjkh*";
+		String newPassword = "yhFlok8jmbkljjkikh*";
+		Response response=passwordChangeService.changePassword(emailAddress, oldPassword, newPassword);
+		assertEquals("Wrong Email address!!",response.getMessage());
 	}
 }

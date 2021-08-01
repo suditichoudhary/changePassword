@@ -3,7 +3,6 @@ package com.change.password.controller;
 import com.change.password.entity.Response;
 import com.change.password.service.PasswordChangeService;
 import com.change.password.service.PasswordVerificationService;
-import javafx.beans.DefaultProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
