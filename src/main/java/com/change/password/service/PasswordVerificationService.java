@@ -37,7 +37,7 @@ public class PasswordVerificationService {
                 response.setMessage("Password should be atleast 18 characters");
             }
 
-            else if(!password.matches(patternMatchingUtility.ALL_POSSIBLE_CHARS)){
+            else if(!patternMatchingUtility.matchesInPwd(patternMatchingUtility.ALL_POSSIBLE_CHARS,password)){
                 logger.debug("Password can only contain : Alphabets/Number/Special Char !@#$&*");
                 response.setMessage("Password can only contain : Alphabets/Numbers/Special Chars !@#$&*");
             }

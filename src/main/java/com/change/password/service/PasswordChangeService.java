@@ -56,8 +56,8 @@ public class PasswordChangeService {
                     if (newPassword != null && !newPassword.isEmpty()) {
 
                         // check newpassword should be < 80% match with old
-                        int perc = patternMatchingUtility.comparePasswordMatchPercentage(oldPassword,newPassword);
-                        if(perc<80) {
+                        boolean percCheck = comparePasswordMatchPercentage(oldPassword,newPassword);
+                        if(!percCheck) {
 
                             // check password new strength
                             response = passwordVerificationService.validateIncomingPassword(newPassword);
@@ -65,11 +65,9 @@ public class PasswordChangeService {
 
                                 // update new password
                                 int i = userDetailsRepository.updateUserPassword(newPassword, emailAddress);
-                                if (i > 0) {
-                                    response.setMessage("Password updated Successfuly :)");
-                                } else {
-                                    response.setMessage("Password NOT updated :(");
-                                }
+
+                                response.setMessage("Password updated Successfuly :)");
+
                             }
                         }else{
                             response.setMessage("New Password is more than 80% similar to the Old Password!");
@@ -87,5 +85,32 @@ public class PasswordChangeService {
         response.setCode(HttpStatus.OK.value());
         response.setData("");
         return response;
+    }
+    public static boolean comparePasswordMatchPercentage(String oldPass, String newPass) {
+        int per = 0;
+
+        int actualMAtch = 0;
+        int exactMatch = 0;
+        actualMAtch += matchTwoString(oldPass, newPass);
+        exactMatch += matchTwoString(oldPass, oldPass);
+
+        per = (int) Math.round(actualMAtch / (exactMatch / 100.0));
+        System.out.println("New Password match % : "+per);
+        return per>80?true:false;
+    }
+
+    private static int matchTwoString(String oldPass, String newPass) {
+        char[] oChars = oldPass.toCharArray();
+        char[] nChars = newPass.toCharArray();
+        int matched = 0;
+        for (int i = 0; i < oChars.length; i++) {
+            char c = oChars[i];
+            if (i < nChars.length) {
+                if (nChars[i] == c) {
+                    matched++;
+                }
+            }
+        }
+        return matched;
     }
 }
