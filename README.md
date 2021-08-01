@@ -51,3 +51,7 @@ TEST CASES :
 11. Test to Not more than 50% number in new pwd
 12. Test to Not more than 4 Duplicate Chars in new pwd
 13. Test to verify old pwd is NOT > 80% match - success
+14. Test to verify old pwd blank checked
+15. Test to verify new pwd blank checked 
+16. Test to verify email blank checked
+17. Test to verify email id doesn't exist
